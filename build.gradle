@@ -11,7 +11,7 @@
 apply plugin: 'java'
 
 // In this section you declare where to find the dependencies of your project
-repositories {
+repository {
     // Use 'jcenter' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
@@ -31,7 +31,8 @@ dependencies {
 */
 
 plugins {
-    id 'org.springframework.boot' version '1.5.4.RELEASE'
+    id 'org.springframework.boot' version '1.5.12.RELEASE'
+    id "net.ltgt.apt" version "0.15"
 }
 
 apply plugin: 'java'
@@ -39,8 +40,8 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-sourceCompatibility = 1.9
-targetCompatibility = 1.9
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     jcenter()
@@ -51,7 +52,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
     compile group: 'com.h2database', name: 'h2'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
+    compileOnly 'org.projectlombok:lombok:1.16.20'
+    annotationProcessor "org.projectlombok:lombok:1.16.20"
 }
