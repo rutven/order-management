@@ -1,0 +1,44 @@
+/**
+ * The application configuration.
+ * @author A true hipster
+ */
+application {
+    config {
+        baseName mainApp,
+        buildTool gradle,
+        clientFramework react,
+        packageName name.legkodymov.orders
+    }
+    entities *
+}
+
+entity OrderEntity {
+    id Long required,
+    orderDate LocalDate required
+}
+
+entity OrderPosition {
+    id Long required,
+    quantity Integer required
+}
+
+entity Product {
+    id Long required,
+    name String required,
+    description String
+}
+
+/**
+ * One to many relationship.
+ */
+relationship OneToMany {
+    OrderEntity to OrderPosition
+}
+
+/**
+ * Many to one relationship.
+ */
+relationship ManyToOne {
+    OrderPosition to Product
+}
+

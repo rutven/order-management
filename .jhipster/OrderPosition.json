@@ -1,0 +1,37 @@
+{
+    "name": "OrderPosition",
+    "fields": [
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "orderEntity",
+            "otherEntityName": "orderEntity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180927191034",
+    "entityTableName": "order_position",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": [
+        "mainApp"
+    ]
+}
