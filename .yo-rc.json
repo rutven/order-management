@@ -30,7 +30,7 @@
     "jhipsterVersion": "5.3.4",
     "authenticationType": "jwt",
     "cacheProvider": "ehcache",
-    "jwtSecretKey": "OTcxYmRjNjJlYjNjYWE2NDA0OGYwMDk0NDQ3MWFmOWU2OGZiNDhjM2EzNmYxZWFlYjgwMTI3ZGFiOTIxZTA4MzgyZGM3NTM4YWQ5MDk4ZmY3ZmJmN2ZmN2ZhZTY2YzZmODU1Nw==",
+    "jwtSecretKey": "NTcyOTc1ZTg2ZjE0OGZlZGE5NzFhZjQ4ZWFhODM5MGY4NTUyZjhlMzdkMGQwNTgxNjYzZTQzMmIyMjYyOGQ3MDQ5ZjdjOTI2Y2MxOTY5MDkwNDQ5Nzc5ZTliNDRkODdiMjk4ZA==",
     "serverPort": "8080",
     "skipUserManagement": false
   },
