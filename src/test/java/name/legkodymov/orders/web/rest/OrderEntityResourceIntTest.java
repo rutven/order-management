@@ -4,6 +4,7 @@ import name.legkodymov.orders.MainApp;
 
 import name.legkodymov.orders.domain.OrderEntity;
 import name.legkodymov.orders.repository.OrderEntityRepository;
+import name.legkodymov.orders.service.OrderEntityService;
 import name.legkodymov.orders.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -46,6 +47,9 @@ public class OrderEntityResourceIntTest {
 
     @Autowired
     private OrderEntityRepository orderEntityRepository;
+    
+    @Autowired
+    private OrderEntityService orderEntityService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -66,7 +70,7 @@ public class OrderEntityResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OrderEntityResource orderEntityResource = new OrderEntityResource(orderEntityRepository);
+        final OrderEntityResource orderEntityResource = new OrderEntityResource(orderEntityService);
         this.restOrderEntityMockMvc = MockMvcBuilders.standaloneSetup(orderEntityResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -186,7 +190,7 @@ public class OrderEntityResourceIntTest {
     @Transactional
     public void updateOrderEntity() throws Exception {
         // Initialize the database
-        orderEntityRepository.saveAndFlush(orderEntity);
+        orderEntityService.save(orderEntity);
 
         int databaseSizeBeforeUpdate = orderEntityRepository.findAll().size();
 
@@ -231,7 +235,7 @@ public class OrderEntityResourceIntTest {
     @Transactional
     public void deleteOrderEntity() throws Exception {
         // Initialize the database
-        orderEntityRepository.saveAndFlush(orderEntity);
+        orderEntityService.save(orderEntity);
 
         int databaseSizeBeforeDelete = orderEntityRepository.findAll().size();
 

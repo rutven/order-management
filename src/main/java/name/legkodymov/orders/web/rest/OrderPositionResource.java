@@ -2,7 +2,7 @@ package name.legkodymov.orders.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import name.legkodymov.orders.domain.OrderPosition;
-import name.legkodymov.orders.repository.OrderPositionRepository;
+import name.legkodymov.orders.service.OrderPositionService;
 import name.legkodymov.orders.web.rest.errors.BadRequestAlertException;
 import name.legkodymov.orders.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -29,10 +29,10 @@ public class OrderPositionResource {
 
     private static final String ENTITY_NAME = "orderPosition";
 
-    private final OrderPositionRepository orderPositionRepository;
+    private final OrderPositionService orderPositionService;
 
-    public OrderPositionResource(OrderPositionRepository orderPositionRepository) {
-        this.orderPositionRepository = orderPositionRepository;
+    public OrderPositionResource(OrderPositionService orderPositionService) {
+        this.orderPositionService = orderPositionService;
     }
 
     /**
@@ -49,7 +49,7 @@ public class OrderPositionResource {
         if (orderPosition.getId() != null) {
             throw new BadRequestAlertException("A new orderPosition cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        OrderPosition result = orderPositionRepository.save(orderPosition);
+        OrderPosition result = orderPositionService.save(orderPosition);
         return ResponseEntity.created(new URI("/api/order-positions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -71,7 +71,7 @@ public class OrderPositionResource {
         if (orderPosition.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        OrderPosition result = orderPositionRepository.save(orderPosition);
+        OrderPosition result = orderPositionService.save(orderPosition);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderPosition.getId().toString()))
             .body(result);
@@ -86,7 +86,7 @@ public class OrderPositionResource {
     @Timed
     public List<OrderPosition> getAllOrderPositions() {
         log.debug("REST request to get all OrderPositions");
-        return orderPositionRepository.findAll();
+        return orderPositionService.findAll();
     }
 
     /**
@@ -99,7 +99,7 @@ public class OrderPositionResource {
     @Timed
     public ResponseEntity<OrderPosition> getOrderPosition(@PathVariable Long id) {
         log.debug("REST request to get OrderPosition : {}", id);
-        Optional<OrderPosition> orderPosition = orderPositionRepository.findById(id);
+        Optional<OrderPosition> orderPosition = orderPositionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(orderPosition);
     }
 
@@ -113,8 +113,7 @@ public class OrderPositionResource {
     @Timed
     public ResponseEntity<Void> deleteOrderPosition(@PathVariable Long id) {
         log.debug("REST request to delete OrderPosition : {}", id);
-
-        orderPositionRepository.deleteById(id);
+        orderPositionService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

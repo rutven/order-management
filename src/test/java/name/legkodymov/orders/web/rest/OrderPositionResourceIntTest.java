@@ -4,6 +4,7 @@ import name.legkodymov.orders.MainApp;
 
 import name.legkodymov.orders.domain.OrderPosition;
 import name.legkodymov.orders.repository.OrderPositionRepository;
+import name.legkodymov.orders.service.OrderPositionService;
 import name.legkodymov.orders.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -44,6 +45,9 @@ public class OrderPositionResourceIntTest {
 
     @Autowired
     private OrderPositionRepository orderPositionRepository;
+    
+    @Autowired
+    private OrderPositionService orderPositionService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -64,7 +68,7 @@ public class OrderPositionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OrderPositionResource orderPositionResource = new OrderPositionResource(orderPositionRepository);
+        final OrderPositionResource orderPositionResource = new OrderPositionResource(orderPositionService);
         this.restOrderPositionMockMvc = MockMvcBuilders.standaloneSetup(orderPositionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -184,7 +188,7 @@ public class OrderPositionResourceIntTest {
     @Transactional
     public void updateOrderPosition() throws Exception {
         // Initialize the database
-        orderPositionRepository.saveAndFlush(orderPosition);
+        orderPositionService.save(orderPosition);
 
         int databaseSizeBeforeUpdate = orderPositionRepository.findAll().size();
 
@@ -229,7 +233,7 @@ public class OrderPositionResourceIntTest {
     @Transactional
     public void deleteOrderPosition() throws Exception {
         // Initialize the database
-        orderPositionRepository.saveAndFlush(orderPosition);
+        orderPositionService.save(orderPosition);
 
         int databaseSizeBeforeDelete = orderPositionRepository.findAll().size();
 

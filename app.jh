@@ -42,3 +42,4 @@ relationship ManyToOne {
     OrderPosition to Product
 }
 
+service * with serviceImpl

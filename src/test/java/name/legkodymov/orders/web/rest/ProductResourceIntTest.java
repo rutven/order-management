@@ -4,6 +4,7 @@ import name.legkodymov.orders.MainApp;
 
 import name.legkodymov.orders.domain.Product;
 import name.legkodymov.orders.repository.ProductRepository;
+import name.legkodymov.orders.service.ProductService;
 import name.legkodymov.orders.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -47,6 +48,9 @@ public class ProductResourceIntTest {
 
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -67,7 +71,7 @@ public class ProductResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductResource productResource = new ProductResource(productRepository);
+        final ProductResource productResource = new ProductResource(productService);
         this.restProductMockMvc = MockMvcBuilders.standaloneSetup(productResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -191,7 +195,7 @@ public class ProductResourceIntTest {
     @Transactional
     public void updateProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        productService.save(product);
 
         int databaseSizeBeforeUpdate = productRepository.findAll().size();
 
@@ -238,7 +242,7 @@ public class ProductResourceIntTest {
     @Transactional
     public void deleteProduct() throws Exception {
         // Initialize the database
-        productRepository.saveAndFlush(product);
+        productService.save(product);
 
         int databaseSizeBeforeDelete = productRepository.findAll().size();
 

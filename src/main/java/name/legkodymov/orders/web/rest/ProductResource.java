@@ -2,7 +2,7 @@ package name.legkodymov.orders.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import name.legkodymov.orders.domain.Product;
-import name.legkodymov.orders.repository.ProductRepository;
+import name.legkodymov.orders.service.ProductService;
 import name.legkodymov.orders.web.rest.errors.BadRequestAlertException;
 import name.legkodymov.orders.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -29,10 +29,10 @@ public class ProductResource {
 
     private static final String ENTITY_NAME = "product";
 
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
-    public ProductResource(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductResource(ProductService productService) {
+        this.productService = productService;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ProductResource {
         if (product.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Product result = productRepository.save(product);
+        Product result = productService.save(product);
         return ResponseEntity.created(new URI("/api/products/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -71,7 +71,7 @@ public class ProductResource {
         if (product.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Product result = productRepository.save(product);
+        Product result = productService.save(product);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, product.getId().toString()))
             .body(result);
@@ -86,7 +86,7 @@ public class ProductResource {
     @Timed
     public List<Product> getAllProducts() {
         log.debug("REST request to get all Products");
-        return productRepository.findAll();
+        return productService.findAll();
     }
 
     /**
@@ -99,7 +99,7 @@ public class ProductResource {
     @Timed
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
         log.debug("REST request to get Product : {}", id);
-        Optional<Product> product = productRepository.findById(id);
+        Optional<Product> product = productService.findOne(id);
         return ResponseUtil.wrapOrNotFound(product);
     }
 
@@ -113,8 +113,7 @@ public class ProductResource {
     @Timed
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         log.debug("REST request to delete Product : {}", id);
-
-        productRepository.deleteById(id);
+        productService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
