@@ -1,0 +1,24 @@
+
+{
+    "mainApp": {
+        "orderPosition" : {
+            "home": {
+                "title": "Order Positions",
+                "createLabel": "Create a new Order Position",
+                "createOrEditLabel": "Create or edit a Order Position"
+            },
+            "created": "A new Order Position is created with identifier {{ param }}",
+            "updated": "A Order Position is updated with identifier {{ param }}",
+            "deleted": "A Order Position is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Order Position {{ id }}?"
+            },
+            "detail": {
+                "title": "Order Position"
+            },
+            "quantity": "Quantity",
+            "product": "Product",
+            "orderEntity": "Order Entity"
+        }
+    }
+}

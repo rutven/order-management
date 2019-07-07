@@ -1,0 +1,42 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "clientPackageManager": "npm",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "enableHibernateCache": true,
+    "enableSwaggerCodegen": false,
+    "enableTranslation": true,
+    "jhiPrefix": "jhi",
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "messageBroker": false,
+    "nativeLanguage": "en",
+    "packageName": "name.legkodymov.orders",
+    "packageFolder": "name/legkodymov/orders",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "serviceDiscoveryType": false,
+    "skipClient": false,
+    "skipServer": false,
+    "testFrameworks": [],
+    "useSass": false,
+    "websocket": false,
+    "baseName": "mainApp",
+    "buildTool": "gradle",
+    "clientFramework": "react",
+    "jhipsterVersion": "5.3.4",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "jwtSecretKey": "OTA1OWY4ZmExMTQ1OGMwYWY2YzkzYjMzYWM2MjY4ODk3NGVkMzQ1YTQ4ODQ0ZGI0NjNkY2IzZGNiNDcwNzdlOWVjMjhkOTdiMWFhZWViYzFmZGFjMGE1MGY5OGNkZjI0ZmE1OA==",
+    "serverPort": "8080",
+    "skipUserManagement": false
+  },
+  "entities": [
+    "OrderEntity",
+    "OrderPosition",
+    "Product"
+  ]
+}
