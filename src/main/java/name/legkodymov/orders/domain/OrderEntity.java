@@ -1,6 +1,4 @@
 package name.legkodymov.orders.domain;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,7 +9,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * A OrderEntity.
@@ -88,19 +85,15 @@ public class OrderEntity implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof OrderEntity)) {
             return false;
         }
-        OrderEntity orderEntity = (OrderEntity) o;
-        if (orderEntity.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), orderEntity.getId());
+        return id != null && id.equals(((OrderEntity) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

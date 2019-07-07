@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,7 +15,7 @@ import { getEntities as getOrderEntities } from 'app/entities/order-entity/order
 import { getEntity, updateEntity, createEntity, reset } from './order-position.reducer';
 import { IOrderPosition } from 'app/shared/model/order-position.model';
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IOrderPositionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -34,6 +34,12 @@ export class OrderPositionUpdate extends React.Component<IOrderPositionUpdatePro
       orderEntityId: '0',
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -60,7 +66,6 @@ export class OrderPositionUpdate extends React.Component<IOrderPositionUpdatePro
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -89,14 +94,14 @@ export class OrderPositionUpdate extends React.Component<IOrderPositionUpdatePro
               <AvForm model={isNew ? {} : orderPositionEntity} onSubmit={this.saveEntity}>
                 {!isNew ? (
                   <AvGroup>
-                    <Label for="id">
+                    <Label for="order-position-id">
                       <Translate contentKey="global.field.id">ID</Translate>
                     </Label>
                     <AvInput id="order-position-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="quantityLabel" for="quantity">
+                  <Label id="quantityLabel" for="order-position-quantity">
                     <Translate contentKey="mainApp.orderPosition.quantity">Quantity</Translate>
                   </Label>
                   <AvField
@@ -111,7 +116,7 @@ export class OrderPositionUpdate extends React.Component<IOrderPositionUpdatePro
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label for="product.id">
+                  <Label for="order-position-product">
                     <Translate contentKey="mainApp.orderPosition.product">Product</Translate>
                   </Label>
                   <AvInput id="order-position-product" type="select" className="form-control" name="product.id">
@@ -126,7 +131,7 @@ export class OrderPositionUpdate extends React.Component<IOrderPositionUpdatePro
                   </AvInput>
                 </AvGroup>
                 <AvGroup>
-                  <Label for="orderEntity.id">
+                  <Label for="order-position-orderEntity">
                     <Translate contentKey="mainApp.orderPosition.orderEntity">Order Entity</Translate>
                   </Label>
                   <AvInput id="order-position-orderEntity" type="select" className="form-control" name="orderEntity.id">
@@ -141,14 +146,16 @@ export class OrderPositionUpdate extends React.Component<IOrderPositionUpdatePro
                   </AvInput>
                 </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/order-position" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />&nbsp;
+                  <FontAwesomeIcon icon="arrow-left" />
+                  &nbsp;
                   <span className="d-none d-md-inline">
                     <Translate contentKey="entity.action.back">Back</Translate>
                   </span>
                 </Button>
                 &nbsp;
                 <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />&nbsp;
+                  <FontAwesomeIcon icon="save" />
+                  &nbsp;
                   <Translate contentKey="entity.action.save">Save</Translate>
                 </Button>
               </AvForm>
@@ -165,7 +172,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   orderEntities: storeState.orderEntity.entities,
   orderPositionEntity: storeState.orderPosition.entity,
   loading: storeState.orderPosition.loading,
-  updating: storeState.orderPosition.updating
+  updating: storeState.orderPosition.updating,
+  updateSuccess: storeState.orderPosition.updateSuccess
 });
 
 const mapDispatchToProps = {

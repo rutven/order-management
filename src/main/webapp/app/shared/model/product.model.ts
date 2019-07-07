@@ -1,4 +1,4 @@
-import { IOrderPosition } from 'app/shared/model//order-position.model';
+import { IOrderPosition } from 'app/shared/model/order-position.model';
 
 export interface IProduct {
   id?: number;

@@ -23,7 +23,9 @@ const initialState = {
   account: {} as any,
   errorMessage: null as string, // Errors returned from server side
   redirectMessage: null as string,
-  sessionHasBeenFetched: false
+  sessionHasBeenFetched: false,
+  idToken: null as string,
+  logoutUrl: null as string
 };
 
 export type AuthenticationState = Readonly<typeof initialState>;
@@ -97,11 +99,18 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
-export const getSession = () => dispatch =>
-  dispatch({
+export const getSession = () => async (dispatch, getState) => {
+  await dispatch({
     type: ACTION_TYPES.GET_SESSION,
     payload: axios.get('api/account')
   });
+
+  const { account } = getState().authentication;
+  if (account && account.langKey) {
+    const langKey = Storage.session.get('locale', account.langKey);
+    await dispatch(setLocale(langKey));
+  }
+};
 
 export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
   const result = await dispatch({
@@ -118,11 +127,6 @@ export const login = (username, password, rememberMe = false) => async (dispatch
     }
   }
   await dispatch(getSession());
-
-  const account = getState().authentication.account;
-  if (account && account.langKey) {
-    await dispatch(setLocale(account.langKey));
-  }
 };
 
 export const clearAuthToken = () => {

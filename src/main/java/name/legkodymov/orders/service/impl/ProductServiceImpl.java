@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing Product.
+ * Service Implementation for managing {@link Product}.
  */
 @Service
 @Transactional
@@ -30,18 +30,19 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Save a product.
      *
-     * @param product the entity to save
-     * @return the persisted entity
+     * @param product the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public Product save(Product product) {
-        log.debug("Request to save Product : {}", product);        return productRepository.save(product);
+        log.debug("Request to save Product : {}", product);
+        return productRepository.save(product);
     }
 
     /**
      * Get all the products.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -54,8 +55,8 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Get one product by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Delete the product by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

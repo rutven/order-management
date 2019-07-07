@@ -5,15 +5,18 @@ module.exports = {
   rootDir: '../../../',
   testURL: 'http://localhost/',
   coverageDirectory: '<rootDir>/build/test-results/',
-  testMatch: ['<rootDir>/src/test/javascript/spec/**/+(*.)+(spec.ts?(x))'],
+  testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts?(x))'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/src/test/javascript'
+  ],
   moduleNameMapper: {
     'app/(.*)': '<rootDir>/src/main/webapp/app/$1',
     '\\.(css|scss)$': 'identity-obj-proxy'
   },
   reporters: [
     'default',
-    [ 'jest-junit', { output: './build/test-results/jest/TESTS-results.xml' } ]
+    [ 'jest-junit', { output: './build/test-results/TESTS-results-jest.xml' } ]
   ],
   testResultsProcessor: 'jest-sonar-reporter',
   testPathIgnorePatterns: [
@@ -26,7 +29,8 @@ module.exports = {
   snapshotSerializers: ['enzyme-to-json/serializer'],
   globals: {
     'ts-jest': {
-      tsConfigFile: './tsconfig.test.json'
+      tsConfig: './tsconfig.test.json',
+      diagnostics: false
     }
   }
 };
