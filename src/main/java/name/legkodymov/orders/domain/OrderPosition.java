@@ -1,5 +1,4 @@
 package name.legkodymov.orders.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -8,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A OrderPosition.
@@ -90,19 +88,15 @@ public class OrderPosition implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof OrderPosition)) {
             return false;
         }
-        OrderPosition orderPosition = (OrderPosition) o;
-        if (orderPosition.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), orderPosition.getId());
+        return id != null && id.equals(((OrderPosition) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

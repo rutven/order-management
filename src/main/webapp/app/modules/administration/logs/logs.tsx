@@ -43,10 +43,10 @@ export class LogsPage extends React.Component<ILogsPageProps, ILogsPageState> {
   render() {
     const { logs, isFetching } = this.props;
     const { filter } = this.state;
-    const loggers = logs ? logs.loggers : [];
+    const loggers = logs ? Object.entries(logs.loggers).map(e => ({ name: e[0], level: e[1].effectiveLevel })) : [];
     return (
       <div>
-        <h2 className="logs-page-heading">
+        <h2 id="logs-page-heading">
           <Translate contentKey="logs.title">Logs</Translate>
         </h2>
         <p>

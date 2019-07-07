@@ -8,7 +8,7 @@ import {
   ICrudPutAction,
   TextFormat,
   JhiPagination,
-  getPaginationItemsNumber,
+  JhiItemCount,
   getSortState,
   IPaginationBaseState
 } from 'react-jhipster';
@@ -63,7 +63,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     const { users, account, match, totalItems } = this.props;
     return (
       <div>
-        <h2 className="userManagement-page-heading">
+        <h2 id="user-management-page-heading">
           <Translate contentKey="userManagement.home.title">Users</Translate>
           <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity">
             <FontAwesomeIcon icon="plus" /> <Translate contentKey="userManagement.home.createLabel">Create a new user</Translate>
@@ -100,7 +100,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                 <Translate contentKey="userManagement.lastModifiedBy">Last Modified By</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
-              <th className="hand" onClick={this.sort('lastModifiedDate')}>
+              <th id="modified-date-sort" className="hand" onClick={this.sort('lastModifiedDate')}>
                 <Translate contentKey="userManagement.lastModifiedDate">Last Modified Date</Translate>
                 <FontAwesomeIcon icon="sort" />
               </th>
@@ -177,14 +177,20 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
             ))}
           </tbody>
         </Table>
-        <Row className="justify-content-center">
-          <JhiPagination
-            items={getPaginationItemsNumber(totalItems, this.state.itemsPerPage)}
-            activePage={this.state.activePage}
-            onSelect={this.handlePagination}
-            maxButtons={5}
-          />
-        </Row>
+        <div className={users && users.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={this.state.activePage}
+              onSelect={this.handlePagination}
+              maxButtons={5}
+              itemsPerPage={this.state.itemsPerPage}
+              totalItems={this.props.totalItems}
+            />
+          </Row>
+        </div>
       </div>
     );
   }

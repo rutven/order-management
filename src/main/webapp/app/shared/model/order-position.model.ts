@@ -1,5 +1,5 @@
-import { IProduct } from 'app/shared/model//product.model';
-import { IOrderEntity } from 'app/shared/model//order-entity.model';
+import { IProduct } from 'app/shared/model/product.model';
+import { IOrderEntity } from 'app/shared/model/order-entity.model';
 
 export interface IOrderPosition {
   id?: number;

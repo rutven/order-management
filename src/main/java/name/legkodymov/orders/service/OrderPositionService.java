@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Interface for managing OrderPosition.
+ * Service Interface for managing {@link OrderPosition}.
  */
 public interface OrderPositionService {
 
     /**
      * Save a orderPosition.
      *
-     * @param orderPosition the entity to save
-     * @return the persisted entity
+     * @param orderPosition the entity to save.
+     * @return the persisted entity.
      */
     OrderPosition save(OrderPosition orderPosition);
 
     /**
      * Get all the orderPositions.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     List<OrderPosition> findAll();
 
@@ -29,15 +29,15 @@ public interface OrderPositionService {
     /**
      * Get the "id" orderPosition.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     Optional<OrderPosition> findOne(Long id);
 
     /**
      * Delete the "id" orderPosition.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     void delete(Long id);
 }

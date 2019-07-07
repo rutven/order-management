@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service Implementation for managing OrderEntity.
+ * Service Implementation for managing {@link OrderEntity}.
  */
 @Service
 @Transactional
@@ -30,18 +30,19 @@ public class OrderEntityServiceImpl implements OrderEntityService {
     /**
      * Save a orderEntity.
      *
-     * @param orderEntity the entity to save
-     * @return the persisted entity
+     * @param orderEntity the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public OrderEntity save(OrderEntity orderEntity) {
-        log.debug("Request to save OrderEntity : {}", orderEntity);        return orderEntityRepository.save(orderEntity);
+        log.debug("Request to save OrderEntity : {}", orderEntity);
+        return orderEntityRepository.save(orderEntity);
     }
 
     /**
      * Get all the orderEntities.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -54,8 +55,8 @@ public class OrderEntityServiceImpl implements OrderEntityService {
     /**
      * Get one orderEntity by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
@@ -67,7 +68,7 @@ public class OrderEntityServiceImpl implements OrderEntityService {
     /**
      * Delete the orderEntity by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {

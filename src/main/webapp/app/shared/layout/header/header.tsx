@@ -1,7 +1,7 @@
-import './header.css';
+import './header.scss';
 
 import React from 'react';
-import { Translate } from 'react-jhipster';
+import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, NavbarBrand, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -9,7 +9,7 @@ import { NavLink as Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand } from './header-components';
-import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from './menus';
+import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from '../menus';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -31,7 +31,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   handleLocaleChange = event => {
-    this.props.onLocaleChange(event.target.value);
+    const langKey = event.target.value;
+    Storage.session.set('locale', langKey);
+    this.props.onLocaleChange(langKey);
   };
 
   renderDevRibbon = () =>

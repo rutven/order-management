@@ -3,6 +3,7 @@ import axios from 'axios';
 import sinon from 'sinon';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from 'redux-promise-middleware';
+import { TranslatorContext } from 'react-jhipster';
 
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 import register, { ACTION_TYPES, handleRegister, reset } from 'app/modules/account/register/register.reducer';
@@ -14,6 +15,10 @@ describe('Creating account tests', () => {
     registrationFailure: false,
     errorMessage: null
   };
+
+  beforeAll(() => {
+    TranslatorContext.registerTranslations('en', {});
+  });
 
   it('should return the initial state', () => {
     expect(register(undefined, {})).toEqual({
@@ -67,7 +72,7 @@ describe('Creating account tests', () => {
 
     const resolvedObject = { value: 'whatever' };
     beforeEach(() => {
-      const mockStore = configureStore([thunk, promiseMiddleware()]);
+      const mockStore = configureStore([thunk, promiseMiddleware]);
       store = mockStore({});
       axios.post = sinon.stub().returns(Promise.resolve(resolvedObject));
     });

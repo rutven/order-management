@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -18,7 +19,9 @@ const getTsLoaderRule = env => {
     {
       loader: 'thread-loader',
       options: {
-        // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+        // There should be 1 cpu for the fork-ts-checker-webpack-plugin.
+        // The value may need to be adjusted (e.g. to 1) in some CI environments,
+        // as cpus() may report more cores than what are available to the build.
         workers: require('os').cpus().length - 1
       }
     },
@@ -55,7 +58,7 @@ module.exports = options => ({
         test: /\.tsx?$/,
         use: getTsLoaderRule(options.env),
         include: [utils.root('./src/main/webapp/app')],
-        exclude: ['node_modules']
+        exclude: [utils.root('node_modules')]
       },
       {
         test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
@@ -75,7 +78,7 @@ module.exports = options => ({
         test: /\.tsx?$/,
         enforce: 'pre',
         loader: 'tslint-loader',
-        exclude: ['node_modules']
+        exclude: [utils.root('node_modules')]
       }
     ]
   },
@@ -124,6 +127,7 @@ module.exports = options => ({
       chunksSortMode: 'dependency',
       inject: 'body'
     }),
+    new BaseHrefWebpackPlugin({ baseHref: '/' }),
     new MergeJsonWebpackPlugin({
       output: {
         groupBy: [

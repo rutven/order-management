@@ -32,67 +32,75 @@ export class OrderPosition extends React.Component<IOrderPositionProps> {
           </Link>
         </h2>
         <div className="table-responsive">
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="mainApp.orderPosition.quantity">Quantity</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="mainApp.orderPosition.product">Product</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="mainApp.orderPosition.orderEntity">Order Entity</Translate>
-                </th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {orderPositionList.map((orderPosition, i) => (
-                <tr key={`entity-${i}`}>
-                  <td>
-                    <Button tag={Link} to={`${match.url}/${orderPosition.id}`} color="link" size="sm">
-                      {orderPosition.id}
-                    </Button>
-                  </td>
-                  <td>{orderPosition.quantity}</td>
-                  <td>{orderPosition.product ? <Link to={`product/${orderPosition.product.id}`}>{orderPosition.product.id}</Link> : ''}</td>
-                  <td>
-                    {orderPosition.orderEntity ? (
-                      <Link to={`order-entity/${orderPosition.orderEntity.id}`}>{orderPosition.orderEntity.id}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${orderPosition.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${orderPosition.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${orderPosition.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
-                    </div>
-                  </td>
+          {orderPositionList && orderPositionList.length > 0 ? (
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>
+                    <Translate contentKey="global.field.id">ID</Translate>
+                  </th>
+                  <th>
+                    <Translate contentKey="mainApp.orderPosition.quantity">Quantity</Translate>
+                  </th>
+                  <th>
+                    <Translate contentKey="mainApp.orderPosition.product">Product</Translate>
+                  </th>
+                  <th>
+                    <Translate contentKey="mainApp.orderPosition.orderEntity">Order Entity</Translate>
+                  </th>
+                  <th />
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {orderPositionList.map((orderPosition, i) => (
+                  <tr key={`entity-${i}`}>
+                    <td>
+                      <Button tag={Link} to={`${match.url}/${orderPosition.id}`} color="link" size="sm">
+                        {orderPosition.id}
+                      </Button>
+                    </td>
+                    <td>{orderPosition.quantity}</td>
+                    <td>
+                      {orderPosition.product ? <Link to={`product/${orderPosition.product.id}`}>{orderPosition.product.id}</Link> : ''}
+                    </td>
+                    <td>
+                      {orderPosition.orderEntity ? (
+                        <Link to={`order-entity/${orderPosition.orderEntity.id}`}>{orderPosition.orderEntity.id}</Link>
+                      ) : (
+                        ''
+                      )}
+                    </td>
+                    <td className="text-right">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button tag={Link} to={`${match.url}/${orderPosition.id}`} color="info" size="sm">
+                          <FontAwesomeIcon icon="eye" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.view">View</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${orderPosition.id}/edit`} color="primary" size="sm">
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${orderPosition.id}/delete`} color="danger" size="sm">
+                          <FontAwesomeIcon icon="trash" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.delete">Delete</Translate>
+                          </span>
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <div className="alert alert-warning">
+              <Translate contentKey="mainApp.orderPosition.home.notFound">No Order Positions found</Translate>
+            </div>
+          )}
         </div>
       </div>
     );

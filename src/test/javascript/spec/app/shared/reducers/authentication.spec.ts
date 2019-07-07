@@ -153,7 +153,7 @@ describe('Authentication reducer tests', () => {
 
     const resolvedObject = { value: 'whatever' };
     beforeEach(() => {
-      const mockStore = configureStore([thunk, promiseMiddleware()]);
+      const mockStore = configureStore([thunk, promiseMiddleware]);
       store = mockStore({ authentication: { account: { langKey: 'en' } } });
       axios.get = sinon.stub().returns(Promise.resolve(resolvedObject));
     });
@@ -166,6 +166,10 @@ describe('Authentication reducer tests', () => {
         {
           type: SUCCESS(ACTION_TYPES.GET_SESSION),
           payload: resolvedObject
+        },
+        {
+          type: localeActionTypes.SET_LOCALE,
+          locale: 'en'
         }
       ];
       await store.dispatch(getSession()).then(() => expect(store.getActions()).toEqual(expectedActions));
@@ -224,7 +228,7 @@ describe('Authentication reducer tests', () => {
   describe('clearAuthToken', () => {
     let store;
     beforeEach(() => {
-      const mockStore = configureStore([thunk, promiseMiddleware()]);
+      const mockStore = configureStore([thunk, promiseMiddleware]);
       store = mockStore({ authentication: { account: { langKey: 'en' } } });
     });
     it('clears the session token on clearAuthToken', async () => {

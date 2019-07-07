@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntity, updateEntity, createEntity, reset } from './order-entity.reducer';
 import { IOrderEntity } from 'app/shared/model/order-entity.model';
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IOrderEntityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -26,6 +26,12 @@ export class OrderEntityUpdate extends React.Component<IOrderEntityUpdateProps, 
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -49,7 +55,6 @@ export class OrderEntityUpdate extends React.Component<IOrderEntityUpdateProps, 
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -78,14 +83,14 @@ export class OrderEntityUpdate extends React.Component<IOrderEntityUpdateProps, 
               <AvForm model={isNew ? {} : orderEntityEntity} onSubmit={this.saveEntity}>
                 {!isNew ? (
                   <AvGroup>
-                    <Label for="id">
+                    <Label for="order-entity-id">
                       <Translate contentKey="global.field.id">ID</Translate>
                     </Label>
                     <AvInput id="order-entity-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="orderDateLabel" for="orderDate">
+                  <Label id="orderDateLabel" for="order-entity-orderDate">
                     <Translate contentKey="mainApp.orderEntity.orderDate">Order Date</Translate>
                   </Label>
                   <AvField
@@ -123,7 +128,8 @@ export class OrderEntityUpdate extends React.Component<IOrderEntityUpdateProps, 
 const mapStateToProps = (storeState: IRootState) => ({
   orderEntityEntity: storeState.orderEntity.entity,
   loading: storeState.orderEntity.loading,
-  updating: storeState.orderEntity.updating
+  updating: storeState.orderEntity.updating,
+  updateSuccess: storeState.orderEntity.updateSuccess
 });
 
 const mapDispatchToProps = {

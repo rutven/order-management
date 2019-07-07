@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { IOrderPosition } from 'app/shared/model//order-position.model';
+import { IOrderPosition } from 'app/shared/model/order-position.model';
 
 export interface IOrderEntity {
   id?: number;

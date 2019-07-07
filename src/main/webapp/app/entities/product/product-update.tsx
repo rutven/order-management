@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntity, updateEntity, createEntity, reset } from './product.reducer';
 import { IProduct } from 'app/shared/model/product.model';
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IProductUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -26,6 +26,12 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id
     };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
   }
 
   componentDidMount() {
@@ -49,7 +55,6 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
       } else {
         this.props.updateEntity(entity);
       }
-      this.handleClose();
     }
   };
 
@@ -78,14 +83,14 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
               <AvForm model={isNew ? {} : productEntity} onSubmit={this.saveEntity}>
                 {!isNew ? (
                   <AvGroup>
-                    <Label for="id">
+                    <Label for="product-id">
                       <Translate contentKey="global.field.id">ID</Translate>
                     </Label>
                     <AvInput id="product-id" type="text" className="form-control" name="id" required readOnly />
                   </AvGroup>
                 ) : null}
                 <AvGroup>
-                  <Label id="nameLabel" for="name">
+                  <Label id="nameLabel" for="product-name">
                     <Translate contentKey="mainApp.product.name">Name</Translate>
                   </Label>
                   <AvField
@@ -98,7 +103,7 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="descriptionLabel" for="description">
+                  <Label id="descriptionLabel" for="product-description">
                     <Translate contentKey="mainApp.product.description">Description</Translate>
                   </Label>
                   <AvField id="product-description" type="text" name="description" />
@@ -128,7 +133,8 @@ export class ProductUpdate extends React.Component<IProductUpdateProps, IProduct
 const mapStateToProps = (storeState: IRootState) => ({
   productEntity: storeState.product.entity,
   loading: storeState.product.loading,
-  updating: storeState.product.updating
+  updating: storeState.product.updating,
+  updateSuccess: storeState.product.updateSuccess
 });
 
 const mapDispatchToProps = {
