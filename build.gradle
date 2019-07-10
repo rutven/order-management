@@ -31,31 +31,42 @@ dependencies {
 */
 
 plugins {
-    id 'org.springframework.boot' version '1.5.12.RELEASE'
-    id "net.ltgt.apt" version "0.15"
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'java'
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+group = 'name.legkodymov.order.management'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
-    compile group: 'com.h2database', name: 'h2'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
-    compileOnly 'org.projectlombok:lombok:1.16.20'
-    annotationProcessor "org.projectlombok:lombok:1.16.20"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testCompile 'io.rest-assured:rest-assured:4.0.0'
+    testCompile 'io.rest-assured:json-path:4.0.0'
+    testCompile 'io.rest-assured:xml-path:4.0.0'
 }
