@@ -25,7 +25,6 @@ public interface ProductService {
      */
     List<Product> findAll();
 
-
     /**
      * Get the "id" product.
      *

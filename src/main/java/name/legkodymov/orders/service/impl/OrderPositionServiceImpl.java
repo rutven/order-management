@@ -51,7 +51,6 @@ public class OrderPositionServiceImpl implements OrderPositionService {
         return orderPositionRepository.findAll();
     }
 
-
     /**
      * Get one orderPosition by id.
      *

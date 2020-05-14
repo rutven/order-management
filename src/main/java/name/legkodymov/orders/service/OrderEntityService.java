@@ -25,7 +25,6 @@ public interface OrderEntityService {
      */
     List<OrderEntity> findAll();
 
-
     /**
      * Get the "id" orderEntity.
      *

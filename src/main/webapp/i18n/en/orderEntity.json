@@ -5,7 +5,7 @@
         "title": "Order Entities",
         "createLabel": "Create a new Order Entity",
         "createOrEditLabel": "Create or edit a Order Entity",
-        "notFound": "No Order Entity found"
+        "notFound": "No Order Entities found"
       },
       "created": "A new Order Entity is created with identifier {{ param }}",
       "updated": "A Order Entity is updated with identifier {{ param }}",

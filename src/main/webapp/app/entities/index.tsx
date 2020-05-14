@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 
-// tslint:disable-next-line:no-unused-variable
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
 import OrderEntity from './order-entity';
@@ -13,9 +13,9 @@ const Routes = ({ match }) => (
   <div>
     <Switch>
       {/* prettier-ignore */}
-      <ErrorBoundaryRoute path={`${match.url}/order-entity`} component={OrderEntity} />
-      <ErrorBoundaryRoute path={`${match.url}/order-position`} component={OrderPosition} />
-      <ErrorBoundaryRoute path={`${match.url}/product`} component={Product} />
+      <ErrorBoundaryRoute path={`${match.url}order-entity`} component={OrderEntity} />
+      <ErrorBoundaryRoute path={`${match.url}order-position`} component={OrderPosition} />
+      <ErrorBoundaryRoute path={`${match.url}product`} component={Product} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

@@ -5,9 +5,6 @@ import name.legkodymov.orders.config.Constants;
 import name.legkodymov.orders.domain.Authority;
 import name.legkodymov.orders.domain.User;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;

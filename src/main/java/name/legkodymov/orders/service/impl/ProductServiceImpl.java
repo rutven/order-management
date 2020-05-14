@@ -51,7 +51,6 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-
     /**
      * Get one product by id.
      *

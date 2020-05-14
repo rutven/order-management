@@ -11,12 +11,12 @@ import OrderEntityDeleteDialog from './order-entity-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
+      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={OrderEntityDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={OrderEntityUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={OrderEntityUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={OrderEntityDetail} />
       <ErrorBoundaryRoute path={match.url} component={OrderEntity} />
     </Switch>
-    <ErrorBoundaryRoute path={`${match.url}/:id/delete`} component={OrderEntityDeleteDialog} />
   </>
 );
 

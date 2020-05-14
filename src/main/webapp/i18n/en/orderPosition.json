@@ -5,7 +5,7 @@
         "title": "Order Positions",
         "createLabel": "Create a new Order Position",
         "createOrEditLabel": "Create or edit a Order Position",
-        "notFound": "No Order Position found"
+        "notFound": "No Order Positions found"
       },
       "created": "A new Order Position is created with identifier {{ param }}",
       "updated": "A Order Position is updated with identifier {{ param }}",
