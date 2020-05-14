@@ -1,9 +1,11 @@
 package name.legkodymov.orders.web.rest;
 
 import name.legkodymov.orders.MainApp;
+import io.github.jhipster.config.JHipsterProperties;
 import name.legkodymov.orders.config.audit.AuditEventConverter;
 import name.legkodymov.orders.domain.PersistentAuditEvent;
 import name.legkodymov.orders.repository.PersistenceAuditEventRepository;
+import name.legkodymov.orders.security.AuthoritiesConstants;
 
 import name.legkodymov.orders.service.AuditEventService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link AuditResource} REST controller.
  */
+@AutoConfigureMockMvc
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @SpringBootTest(classes = MainApp.class)
 @Transactional
 public class AuditResourceIT {
@@ -42,34 +48,10 @@ public class AuditResourceIT {
     @Autowired
     private PersistenceAuditEventRepository auditEventRepository;
 
-    @Autowired
-    private AuditEventConverter auditEventConverter;
-
-    @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    @Qualifier("mvcConversionService")
-    private FormattingConversionService formattingConversionService;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
     private PersistentAuditEvent auditEvent;
 
+    @Autowired
     private MockMvc restAuditMockMvc;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        AuditEventService auditEventService =
-            new AuditEventService(auditEventRepository, auditEventConverter);
-        AuditResource auditResource = new AuditResource(auditEventService);
-        this.restAuditMockMvc = MockMvcBuilders.standaloneSetup(auditResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setConversionService(formattingConversionService)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
 
     @BeforeEach
     public void initTest() {
@@ -88,7 +70,7 @@ public class AuditResourceIT {
         // Get all the audits
         restAuditMockMvc.perform(get("/management/audits"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].principal").value(hasItem(SAMPLE_PRINCIPAL)));
     }
 
@@ -100,7 +82,7 @@ public class AuditResourceIT {
         // Get the audit
         restAuditMockMvc.perform(get("/management/audits/{id}", auditEvent.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.principal").value(SAMPLE_PRINCIPAL));
     }
 
@@ -116,7 +98,7 @@ public class AuditResourceIT {
         // Get the audit
         restAuditMockMvc.perform(get("/management/audits?fromDate="+fromDate+"&toDate="+toDate))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].principal").value(hasItem(SAMPLE_PRINCIPAL)));
     }
 
@@ -132,7 +114,7 @@ public class AuditResourceIT {
         // Query audits but expect no results
         restAuditMockMvc.perform(get("/management/audits?fromDate=" + fromDate + "&toDate=" + toDate))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(header().string("X-Total-Count", "0"));
     }
 

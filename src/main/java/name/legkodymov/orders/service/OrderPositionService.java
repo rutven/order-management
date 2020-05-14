@@ -25,7 +25,6 @@ public interface OrderPositionService {
      */
     List<OrderPosition> findAll();
 
-
     /**
      * Get the "id" orderPosition.
      *

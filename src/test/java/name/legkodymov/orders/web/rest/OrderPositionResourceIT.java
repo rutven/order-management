@@ -4,34 +4,31 @@ import name.legkodymov.orders.MainApp;
 import name.legkodymov.orders.domain.OrderPosition;
 import name.legkodymov.orders.repository.OrderPositionRepository;
 import name.legkodymov.orders.service.OrderPositionService;
-import name.legkodymov.orders.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static name.legkodymov.orders.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Integration tests for the {@Link OrderPositionResource} REST controller.
+ * Integration tests for the {@link OrderPositionResource} REST controller.
  */
 @SpringBootTest(classes = MainApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class OrderPositionResourceIT {
 
     private static final Integer DEFAULT_QUANTITY = 1;
@@ -44,35 +41,12 @@ public class OrderPositionResourceIT {
     private OrderPositionService orderPositionService;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restOrderPositionMockMvc;
 
     private OrderPosition orderPosition;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final OrderPositionResource orderPositionResource = new OrderPositionResource(orderPositionService);
-        this.restOrderPositionMockMvc = MockMvcBuilders.standaloneSetup(orderPositionResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -109,7 +83,7 @@ public class OrderPositionResourceIT {
 
         // Create the OrderPosition
         restOrderPositionMockMvc.perform(post("/api/order-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(orderPosition)))
             .andExpect(status().isCreated());
 
@@ -130,7 +104,7 @@ public class OrderPositionResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOrderPositionMockMvc.perform(post("/api/order-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(orderPosition)))
             .andExpect(status().isBadRequest());
 
@@ -150,7 +124,7 @@ public class OrderPositionResourceIT {
         // Create the OrderPosition, which fails.
 
         restOrderPositionMockMvc.perform(post("/api/order-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(orderPosition)))
             .andExpect(status().isBadRequest());
 
@@ -167,7 +141,7 @@ public class OrderPositionResourceIT {
         // Get all the orderPositionList
         restOrderPositionMockMvc.perform(get("/api/order-positions?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderPosition.getId().intValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)));
     }
@@ -181,7 +155,7 @@ public class OrderPositionResourceIT {
         // Get the orderPosition
         restOrderPositionMockMvc.perform(get("/api/order-positions/{id}", orderPosition.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(orderPosition.getId().intValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY));
     }
@@ -210,7 +184,7 @@ public class OrderPositionResourceIT {
             .quantity(UPDATED_QUANTITY);
 
         restOrderPositionMockMvc.perform(put("/api/order-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedOrderPosition)))
             .andExpect(status().isOk());
 
@@ -230,7 +204,7 @@ public class OrderPositionResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOrderPositionMockMvc.perform(put("/api/order-positions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(orderPosition)))
             .andExpect(status().isBadRequest());
 
@@ -249,26 +223,11 @@ public class OrderPositionResourceIT {
 
         // Delete the orderPosition
         restOrderPositionMockMvc.perform(delete("/api/order-positions/{id}", orderPosition.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<OrderPosition> orderPositionList = orderPositionRepository.findAll();
         assertThat(orderPositionList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(OrderPosition.class);
-        OrderPosition orderPosition1 = new OrderPosition();
-        orderPosition1.setId(1L);
-        OrderPosition orderPosition2 = new OrderPosition();
-        orderPosition2.setId(orderPosition1.getId());
-        assertThat(orderPosition1).isEqualTo(orderPosition2);
-        orderPosition2.setId(2L);
-        assertThat(orderPosition1).isNotEqualTo(orderPosition2);
-        orderPosition1.setId(null);
-        assertThat(orderPosition1).isNotEqualTo(orderPosition2);
     }
 }

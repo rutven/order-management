@@ -41,7 +41,7 @@
       "username.placeholder": "Votre nom d'utilisateur",
       "currentpassword.label": "Mot de passe actuel",
       "currentpassword.placeholder": "Mot de passe actuel",
-      "newpassword": "Nouveau mot de passe",
+      "newpassword.label": "Nouveau mot de passe",
       "newpassword.placeholder": "Nouveau mot de passe",
       "confirmpassword.label": "Confirmation du nouveau mot de passe",
       "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
@@ -66,13 +66,13 @@
       "validate": {
         "newpassword": {
           "required": "Votre mot de passe est requis.",
-          "minlength": "Votre mot de passe doit comporter au moins 5 caractères.",
+          "minlength": "Votre mot de passe doit comporter au moins 4 caractères.",
           "maxlength": "Votre mot de passe ne doit pas comporter plus de 50 caractères.",
           "strength": "Robustesse du mot de passe :"
         },
         "confirmpassword": {
           "required": "Votre confirmation du mot de passe est requise.",
-          "minlength": "Votre confirmation du mot de passe doit comporter au moins 5 caractères.",
+          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères.",
           "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères."
         },
         "email": {
@@ -120,7 +120,8 @@
       "maxbytes": "Ce champ doit être inférieur à {{max}} bytes.",
       "pattern": "Ce champ doit suivre l'expression régulière {{pattern}}.",
       "number": "Ce champ doit être un nombre.",
-      "datetimelocal": "Ce champ doit être une date et une heure."
+      "datetimelocal": "Ce champ doit être une date et une heure.",
+      "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail."
     }
   },
   "error": {
@@ -131,8 +132,12 @@
     "Size": "Le champ {{fieldName}} ne respecte pas les critères minimum et maximum !",
     "userexists": "Login déjà utilisé !",
     "emailexists": "Email déjà utilisé !",
-    "idexists": "Une nouvelle entité {{entityName}} ne peut pas avoir d'ID !",
-    "idnull": "Invalid ID"
+    "idexists": "Une nouvelle entité {{entityName}} ne peut pas avoir d'identifiant !",
+    "idnull": "Identifiant invalide",
+    "file": {
+      "could.not.extract": "Impossible d'extraire le fichier",
+      "not.image": "Le fichier doit être une image et non du type \"{{ fileType }}\""
+    }
   },
   "footer": "Ceci est votre pied de page"
 }

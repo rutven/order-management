@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
@@ -11,52 +11,55 @@ import { getEntity, deleteEntity } from './order-entity.reducer';
 
 export interface IOrderEntityDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export class OrderEntityDeleteDialog extends React.Component<IOrderEntityDeleteDialogProps> {
-  componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
-  }
+export const OrderEntityDeleteDialog = (props: IOrderEntityDeleteDialogProps) => {
+  useEffect(() => {
+    props.getEntity(props.match.params.id);
+  }, []);
 
-  confirmDelete = event => {
-    this.props.deleteEntity(this.props.orderEntityEntity.id);
-    this.handleClose(event);
+  const handleClose = () => {
+    props.history.push('/order-entity');
   };
 
-  handleClose = event => {
-    event.stopPropagation();
-    this.props.history.goBack();
+  useEffect(() => {
+    if (props.updateSuccess) {
+      handleClose();
+    }
+  }, [props.updateSuccess]);
+
+  const confirmDelete = () => {
+    props.deleteEntity(props.orderEntityEntity.id);
   };
 
-  render() {
-    const { orderEntityEntity } = this.props;
-    return (
-      <Modal isOpen toggle={this.handleClose}>
-        <ModalHeader toggle={this.handleClose}>
-          <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
-        </ModalHeader>
-        <ModalBody id="mainApp.orderEntity.delete.question">
-          <Translate contentKey="mainApp.orderEntity.delete.question" interpolate={{ id: orderEntityEntity.id }}>
-            Are you sure you want to delete this OrderEntity?
-          </Translate>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
-            <FontAwesomeIcon icon="ban" />
-            &nbsp;
-            <Translate contentKey="entity.action.cancel">Cancel</Translate>
-          </Button>
-          <Button id="jhi-confirm-delete-orderEntity" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
-          </Button>
-        </ModalFooter>
-      </Modal>
-    );
-  }
-}
+  const { orderEntityEntity } = props;
+  return (
+    <Modal isOpen toggle={handleClose}>
+      <ModalHeader toggle={handleClose}>
+        <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
+      </ModalHeader>
+      <ModalBody id="mainApp.orderEntity.delete.question">
+        <Translate contentKey="mainApp.orderEntity.delete.question" interpolate={{ id: orderEntityEntity.id }}>
+          Are you sure you want to delete this OrderEntity?
+        </Translate>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="secondary" onClick={handleClose}>
+          <FontAwesomeIcon icon="ban" />
+          &nbsp;
+          <Translate contentKey="entity.action.cancel">Cancel</Translate>
+        </Button>
+        <Button id="jhi-confirm-delete-orderEntity" color="danger" onClick={confirmDelete}>
+          <FontAwesomeIcon icon="trash" />
+          &nbsp;
+          <Translate contentKey="entity.action.delete">Delete</Translate>
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+};
 
 const mapStateToProps = ({ orderEntity }: IRootState) => ({
-  orderEntityEntity: orderEntity.entity
+  orderEntityEntity: orderEntity.entity,
+  updateSuccess: orderEntity.updateSuccess
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -64,7 +67,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OrderEntityDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderEntityDeleteDialog);

@@ -51,7 +51,6 @@ public class OrderEntityServiceImpl implements OrderEntityService {
         return orderEntityRepository.findAll();
     }
 
-
     /**
      * Get one orderEntity by id.
      *

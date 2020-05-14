@@ -126,7 +126,6 @@ export const updateEntity: ICrudPutAction<IOrderPosition> = entity => async disp
     type: ACTION_TYPES.UPDATE_ORDERPOSITION,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -136,7 +135,6 @@ export const deleteEntity: ICrudDeleteAction<IOrderPosition> = id => async dispa
     type: ACTION_TYPES.DELETE_ORDERPOSITION,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 
