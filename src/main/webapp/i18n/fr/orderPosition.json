@@ -1,0 +1,24 @@
+{
+  "mainApp": {
+    "orderPosition": {
+      "home": {
+        "title": "OrderPositions",
+        "createLabel": "Créer un nouveau Order Position",
+        "createOrEditLabel": "Créer ou éditer un Order Position",
+        "notFound": "Aucun Order Position trouvé"
+      },
+      "created": "Un nouveau Order Position a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Order Position avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Order Position avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Order Position {{ id }} ?"
+      },
+      "detail": {
+        "title": "Order Position"
+      },
+      "quantity": "Quantity",
+      "product": "Product",
+      "orderEntity": "Order Entity"
+    }
+  }
+}

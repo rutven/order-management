@@ -1,0 +1,23 @@
+{
+  "mainApp": {
+    "orderEntity": {
+      "home": {
+        "title": "OrderEntities",
+        "createLabel": "Créer un nouveau Order Entity",
+        "createOrEditLabel": "Créer ou éditer un Order Entity",
+        "notFound": "Aucun Order Entity trouvé"
+      },
+      "created": "Un nouveau Order Entity a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Order Entity avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Order Entity avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Order Entity {{ id }} ?"
+      },
+      "detail": {
+        "title": "Order Entity"
+      },
+      "orderDate": "Order Date",
+      "orderPosition": "Order Position"
+    }
+  }
+}
